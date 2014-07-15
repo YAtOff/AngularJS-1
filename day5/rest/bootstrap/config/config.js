@@ -8,21 +8,21 @@ var config = {
     app: {
       name: 'solution'
     },
-    port: 3000
+    port: 3333
   },
   test: {
     root: rootPath,
     app: {
       name: 'solution'
     },
-    port: 3000
+    port: 3333
   },
   production: {
     root: rootPath,
     app: {
       name: 'solution'
     },
-    port: 3000
+    port: 3333
   }
 };
 
