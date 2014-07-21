@@ -1,15 +1,15 @@
 <p>
-  Username: <input type="text">
-  <button class="btn btn-primary">Add</button>
-  <div>
+  Username: <input type="text" ng-model="currentUser">
+  <button class="btn btn-primary" ng-click="add()">Add</button>
+  <div ng-show="!users">
     There are no any users
   </div>
-  <ul>
-    <li>
-      <a>
-        <span></span>
+  <ul ng-show="!!users">
+    <li ng-repeat="user in users">
+      <a href="#/users/{{user}}">
+        <span ng-bind="user"></span>
       </a>
-      <a href="javascript:void(0)">[X]</a>
+      <a href="javascript:void(0)" ng-click="remove(user)">[X]</a>
     </li>
   </ul>
 </p>

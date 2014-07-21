@@ -1,8 +1,8 @@
-<h2>Repositories for <span></span></h2>
+<h2>Repositories for <span ng-bind="user.username"></span></h2>
 
-<p>
+<p ng-show="!user.repos">
   No repositories
 </p>
 
-<div class="gridStyle"></div>
+<div class="gridStyle" ng-show="!!user.repos" ng-grid="gridOptions"></div>
 
