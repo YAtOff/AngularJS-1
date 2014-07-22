@@ -1,4 +1,4 @@
-GitHubStats.controller('HomeCtrl', function ($scope, User) {
+GitHubStats.controller('HomeCtrl', function HomeCtrl($scope, User) {
     $scope.users = User.getUsernames();
     $scope.add = function add(username) {
         User.addUsername(username);

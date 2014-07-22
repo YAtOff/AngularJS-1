@@ -1,4 +1,4 @@
-GitHubStats.controller('UserReposCtrl', function ($location, $scope, repos, user) {
+GitHubStats.controller('UserReposCtrl', function UserReposCtrl($location, $scope, repos, user) {
     $scope.repos = repos;
     $scope.user = user;
 
@@ -9,7 +9,7 @@ GitHubStats.controller('UserReposCtrl', function ($location, $scope, repos, user
             {field: 'starsCount'},
             {field: 'createdAt'}
         ],
-        beforeSelectionChange: function (row, ev) {
+        beforeSelectionChange: function onBeforeSelectionChange(row, ev) {
             $location.path($location.path() + '/' + row.entity.name);
         }
     };

@@ -1,14 +1,7 @@
-GitHubStats.factory('CachableModel', function ($interpolate, $cacheFactory, $q, req) {
+GitHubStats.factory('CachableModel', function CachableModelFactory($interpolate, $cacheFactory, $q, req) {
     'use strict';
 
     var cache = {};
-
-    function interpolate(str, context) {
-        str.replace(/{{([^}]+)}}/g, function(match, p1) {
-            return context[p1];
-        });
-        return str;
-    }
 
     function createObject(constructor, data) {
         var o = Object.create(constructor.prototype);
@@ -19,9 +12,9 @@ GitHubStats.factory('CachableModel', function ($interpolate, $cacheFactory, $q, 
     function CachableModel() {
     }
 
-    CachableModel.get = function (config) {
+    CachableModel.get = function get(config) {
         var cachedObject = cache[config.url],
-            url = interpolate(config.url, config.context),
+            url = $interpolate(config.url)(config.context),
             data;
         if (!cachedObject) {
             cachedObject = $cacheFactory(config.url);
@@ -31,10 +24,10 @@ GitHubStats.factory('CachableModel', function ($interpolate, $cacheFactory, $q, 
         if (data) {
             return $q.when(data);
         } else {
-            req.get(url).then(function (res) {
+            req.get(url).then(function success(res) {
                 var result;
                 if (config.isArray) {
-                    result = res.data.map(function (d) {
+                    result = res.data.map(function convert(d) {
                         return createObject(config.constructor, d);
                     });
                 } else {

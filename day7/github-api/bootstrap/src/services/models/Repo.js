@@ -1,4 +1,4 @@
-GitHubStats.factory('Repo', function (GITHUB_API, CachableModel) {
+GitHubStats.factory('Repo', function RepoFactory(GITHUB_API, CachableModel) {
 
     function Repo(config) {
         this.name = config.name;

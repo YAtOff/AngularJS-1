@@ -1,2 +1,2 @@
-GitHubStats.controllers('MainCtrl', function ($scope) {
+GitHubStats.controllers('MainCtrl', function MainCtrl($scope) {
 });
