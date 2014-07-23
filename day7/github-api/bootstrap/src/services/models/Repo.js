@@ -1,4 +1,4 @@
-GitHubStats.factory('Repo', function RepoFactory(GITHUB_API, CachableModel) {
+GitHubStats.factory('Repo', function RepoFactory($rootScope, GITHUB_API, CachableModel) {
 
     function Repo(config) {
         this.name = config.name;
@@ -17,18 +17,20 @@ GitHubStats.factory('Repo', function RepoFactory(GITHUB_API, CachableModel) {
             context:  {username: username },
             isArray: true,
             constructor: Repo
+        }).then(function (res) {
+            $rootScope.$broadcast('alert', {
+                text: 'Some repos maight be missing',
+                type: 'warning'
+            });
+            return res;
         });
     };
 
     Repo.get = function get(username, reponame) {
-        return CachableModel.get({
-            url: GITHUB_API +  '/users/{{username}}/repos/{{reponame}}',
-            context:  {
-                username: username,
-                reponame: reponame
-            },
-            isArray: false,
-            constructor: Repo
+        return Repo.getAllForUser(username).then(function (repos) {
+            return repos.filter(function (repo) {
+                return repo.name === reponame;
+            })[0];
         });
     };
     return Repo;

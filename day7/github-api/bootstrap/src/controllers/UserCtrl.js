@@ -1,3 +1,3 @@
-GitHubStats.controller('UserCtrl', function UserCtrl(user) {
+GitHubStats.controller('UserCtrl', function UserCtrl($scope, user) {
     $scope.user = user;
 });

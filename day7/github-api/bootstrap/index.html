@@ -18,11 +18,11 @@
           <ul class="nav navbar-nav">
             <li><a href="#/stats/users">User stats</a></li>
           </ul>
-          <img src="images/loading.gif" class="loading-image" ng-show="loading">
+          <div gh-spiner imgsrc="images/loading.gif"></div>
         </div>
       </div>
     </nav>
-    <div id="alert-container" gh-alert></div>
+    <div id="alert-container" gh-alert timeout="4000"></div>
   </header>
   <section ng-view>
   </section>
@@ -45,5 +45,6 @@
   <script src="src/services/req.js"></script>
   <script src="src/services/storage.js"></script>
   <script src="src/directives/ghAlert.js"></script>
+  <script src="src/directives/ghSpiner.js"></script>
 </body>
 </html>

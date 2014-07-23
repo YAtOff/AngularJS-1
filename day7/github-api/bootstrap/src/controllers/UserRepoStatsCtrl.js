@@ -7,7 +7,7 @@ GitHubStats.controller('UserRepoStatsCtrl', function UserRepoStatsCtrl($scope, r
         return grouped;
     }
 
-    function prepareForChart(items, prop) {
+    function prepareForPieChart(items, prop) {
         var grouped = groupBy(items, prop);
         return Object.keys(grouped).map(function convert(key) {
             return {
@@ -19,13 +19,24 @@ GitHubStats.controller('UserRepoStatsCtrl', function UserRepoStatsCtrl($scope, r
         });
     }
 
+    function prepareForBarChart(items, first, second) {
+        return items.map(function (item) {
+            return {
+                c: [
+                    {v: item[first]},
+                    {v: item[second]}
+                ]
+            };
+        });
+    }
+
     $scope.languageStats = {};
     $scope.languageStats.data = {
         'cols': [
             {id: 'l', label: 'Language', type: 'string'},
             {id: 'p', label: 'Projects', type: 'number'}
         ],
-        'rows': prepareForChart(repos, 'language')
+        'rows': prepareForPieChart(repos, 'language')
     };
     $scope.languageStats.type = 'PieChart';
     $scope.languageStats.options = {
@@ -38,9 +49,9 @@ GitHubStats.controller('UserRepoStatsCtrl', function UserRepoStatsCtrl($scope, r
             {id: 'l', label: 'Language', type: 'string'},
             {id: 'p', label: 'Projects', type: 'number'}
         ],
-        'rows': prepareForChart(repos.filter(function condition(repo) {
-            return 100 < repo.starCount;
-        }), 'starCount')
+        'rows': prepareForBarChart(repos.filter(function condition(repo) {
+            return 100 < repo.starsCount;
+        }), 'name', 'starsCount')
  
     };
     $scope.starsStats.type = 'BarChart';

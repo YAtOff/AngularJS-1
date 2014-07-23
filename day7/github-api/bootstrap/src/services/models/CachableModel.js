@@ -3,12 +3,6 @@ GitHubStats.factory('CachableModel', function CachableModelFactory($interpolate,
 
     var cache = {};
 
-    function createObject(constructor, data) {
-        var o = Object.create(constructor.prototype);
-        constructor.call(o, data);
-        return o;
-    }
-
     function CachableModel() {
     }
 
@@ -24,14 +18,14 @@ GitHubStats.factory('CachableModel', function CachableModelFactory($interpolate,
         if (data) {
             return $q.when(data);
         } else {
-            req.get(url).then(function success(res) {
+            return req.get(url).then(function success(res) {
                 var result;
                 if (config.isArray) {
                     result = res.data.map(function convert(d) {
-                        return createObject(config.constructor, d);
+                        return new config.constructor(d);
                     });
                 } else {
-                    result = createObject(config.constructor, res.data);
+                    result = new config.constructor(res.data);
                 }
                 cachedObject.put(url, result);
                 return result;

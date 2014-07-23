@@ -1,19 +1,10 @@
 GitHubStats.controller('UsersStatsCtrl', function UsersStatsCtrl($scope, users) {
-    function groupBy(items, prop) {
-        var grouped = {};
-        items.forEach(function group(item) {
-            grouped[item[prop]] = (grouped[item] || 0) + 1;
-        });
-        return grouped;
-    }
-
-    function prepareForChart(items, prop) {
-        var grouped = groupBy(items, prop);
-        return Object.keys(grouped).map(function convert(key) {
+    function prepareForChart(items, first, second) {
+        return items.map(function (item) {
             return {
                 c: [
-                    {v: key},
-                    {v: grouped[key]}
+                    {v: item[first]},
+                    {v: item[second]}
                 ]
             };
         });
@@ -25,7 +16,7 @@ GitHubStats.controller('UsersStatsCtrl', function UsersStatsCtrl($scope, users) 
             {id: 'u', label: 'Username', type: 'string'},
             {id: 'f', label: 'Followers', type: 'number'}
         ],
-        'rows': prepareForChart(users, 'followers')
+        'rows': prepareForChart(users, 'username', 'followers')
     };
     $scope.userFollowers.type = 'BarChart';
     $scope.userFollowers.options = {
@@ -38,7 +29,7 @@ GitHubStats.controller('UsersStatsCtrl', function UsersStatsCtrl($scope, users) 
             {id: 'u', label: 'Username', type: 'string'},
             {id: 'f', label: 'Following', type: 'number'}
         ],
-        'rows': prepareForChart(users, 'following')
+        'rows': prepareForChart(users, 'username', 'following')
     };
     $scope.userFollowing.type = 'BarChart';
     $scope.userFollowing.options = {
@@ -49,9 +40,9 @@ GitHubStats.controller('UsersStatsCtrl', function UsersStatsCtrl($scope, users) 
     $scope.userRepos.data = {
         'cols': [
             {id: 'u', label: 'Username', type: 'string'},
-            {id: 'f', label: 'Following', type: 'number'}
+            {id: 'f', label: 'Repos', type: 'number'}
         ],
-        'rows': prepareForChart(users, 'repos')
+        'rows': prepareForChart(users, 'username', 'publicReposCount')
     };
     $scope.userRepos.type = 'BarChart';
     $scope.userRepos.options = {

@@ -10,7 +10,7 @@
             controller: 'HomeCtrl'
         })
         .when('/users/:username', {
-            templateurl: 'partials/user.html', 
+            templateUrl: 'partials/user.html', 
             controller: 'UserCtrl',
             resolve: {
                 user: function (User, $route) {
@@ -19,19 +19,19 @@
             }
         })
         .when('/repos/:username', {
-            templateurl: 'partials/user-repos.html', 
+            templateUrl: 'partials/user-repos.html', 
             controller: 'UserReposCtrl',
             resolve: {
                 user: function (User, $route) {
                     return User.get($route.current.params.username);
                 },
-                repos: function (user) {
-                    return user.repos;
+                repos: function (Repo, $route) {
+                    return Repo.getAllForUser($route.current.params.username);
                 },
             }
         })
         .when('/repos/:username/:repository', {
-            templateurl: 'partials/repo.html', 
+            templateUrl: 'partials/repo.html', 
             controller: 'RepoCtrl',
             resolve: {
                 user: function (User, $route) {
@@ -44,7 +44,7 @@
             }
         })
         .when('/stats/users', {
-            templateurl: 'partials/users-stats.html', 
+            templateUrl: 'partials/users-stats.html', 
             controller: 'UsersStatsCtrl',
             resolve: {
                 users: function (User) {
@@ -53,7 +53,7 @@
             }
         })
         .when('/stats/users/:username', {
-            templateurl: 'partials/users-repo-stats.html', 
+            templateUrl: 'partials/user-repo-stats.html', 
             controller: 'UserRepoStatsCtrl',
             resolve: {
                 repos: function (Repo, $route) {
@@ -65,10 +65,12 @@
     });
 
     GitHubStats.config(function($httpProvider) {
-        $httpProvider.interceptors.push(function () {
+        $httpProvider.interceptors.push(function (GITHUB_API) {
             return {
                 request: function (config) {
-                    config.url = config.url + '?client_id=8f3b8d572129632cf422&client_secret=f0669941c23378c30fb89f6c37be9075a5628bba';
+                    if (config.url.indexOf(GITHUB_API) === 0) {
+                        config.url = config.url + '?client_id=8f3b8d572129632cf422&client_secret=f0669941c23378c30fb89f6c37be9075a5628bba';
+                    }
                     return config;
                 }
             };

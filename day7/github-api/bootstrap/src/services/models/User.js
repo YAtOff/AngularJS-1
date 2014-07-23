@@ -2,7 +2,7 @@ GitHubStats.factory('User',
     function UserFactory(GITHUB_API, CachableModel, storage, $q, Repo) {
     'use strict';
 
-    var usernamesList = storage.get('users') || [];
+    var usernamesList = storage.get('usernames') || [];
 
     function User(config) {
         this.username = config.login;
@@ -33,13 +33,11 @@ GitHubStats.factory('User',
     };
     User.addUsername = function addUsername(username) {
         usernamesList.push(username);
-        storage.put(usernamesList);
+        storage.put('usernames', usernamesList);
     };
     User.removeUsername = function removeUsername(username) {
-        usernamesList = usernamesList.filter(function condition(un) {
-            return un !== username;
-        });
-        storage.put(usernamesList);
+        usernamesList.splice(usernamesList.indexOf(username), 1);
+        storage.put('usernames', usernamesList);
     };
     User.all = function all() {
         return $q.all(usernamesList.map(function convert(un) {

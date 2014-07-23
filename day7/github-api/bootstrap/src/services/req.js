@@ -7,7 +7,10 @@
                 return $http.get(url, config).then(function success(res) {
                     return res;
                 }, function error(res) {
-                    $rootScope.$broadcast('error', res.data.message);
+                    $rootScope.$broadcast('alert', {
+                        text: res.data.message,
+                        type: 'error'
+                    });
                 });
             }
         };

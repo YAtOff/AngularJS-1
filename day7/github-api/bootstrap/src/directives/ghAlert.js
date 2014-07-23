@@ -1,18 +1,25 @@
 GitHubStats.directive('ghAlert', function ($timeout, $rootScope) {
     return {
-        scope: true,
+        scope: {
+            timeout: '@'
+        },
         replace: true,
-        template: '<div class="alert alert-danger" role="alert" ng-bind="message"></div>',
+        template: '<div class="alert" role="alert" ng-bind="message"></div>',
         link: function link(scope, element, attrs) {
+            var alertClasses = {
+                error: 'alert-danger',
+                warning: 'alert-warning'
+            };
+            
             scope.$on('$routeChangeStart', function () {
-                angular.element(element).attr('ng-show', 'false');
+                $(element).hide();
             });
-            $rootScope.$on('error', function (ev, data) {
-                scope.message = data;
-                angular.element(element).attr('ng-show', 'true');
+            $rootScope.$on('alert', function (ev, message) {
+                scope.message = message.text;
+                $(element).addClass(alertClasses[message.type]).show();
                 $timeout(function () {
-                    angular.element(element).attr('ng-show', 'false');
-                }, 4000);
+                    $(element).removeClass(alertClasses[message.type]).hide();
+                }, parseInt(scope.timeout) || 8000);
             });
         }
     };
