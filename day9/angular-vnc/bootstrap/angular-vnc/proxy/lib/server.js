@@ -9,6 +9,8 @@ var RFB = require('rfb'),
     };
 
 function createRfbConnection(config, socket) {
+  console.log('Creating RFB client.');
+  console.log(config.hostname, config.port, config.password);
   try {
     var r = RFB({
       host: config.hostname,
